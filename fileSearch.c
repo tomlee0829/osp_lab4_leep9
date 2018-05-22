@@ -9,6 +9,7 @@
 #include <sys/stat.h>
 #include <string.h>
 #include <time.h>
+#define CLOCKS_PER_MS (CLOCKS_PER_SEC / 1000)
 
 void fileSearch(char *searchTerm)
 {
@@ -24,10 +25,10 @@ void fileSearch(char *searchTerm)
     {
         if(directory)
         {
-            while((entry = readdir(directory)))
+            while((entry = readdir(directory)) != NULL)
             {
                 dirName = entry->d_name;
-                if (stat(dirName, &dirSt) == -1)
+                if(stat(dirName, &dirSt) == -1)
                 {
                     perror("error");
                     continue;
@@ -58,8 +59,8 @@ void fileSearch(char *searchTerm)
 
 int main(int argc, char *argv[])
 {
-    char  *dirPath;
-    char *searchTerm;
+    char* dirPath;
+    char* searchTerm;
     struct stat dirSt;
     
     //Argument error
@@ -79,6 +80,13 @@ int main(int argc, char *argv[])
     
     chdir(dirPath);
     fileSearch(searchTerm);
+
+    clock_t startTime, endTime;
+    float totalTime = 0;
+    startTime = clock();
+    endTime = clock();
+    totalTime = (float)(endTime - startTime) / CLOCKS_PER_MS;
+    printf("\nTime: %fms \n", totalTime);
     
     return 0;
 }
