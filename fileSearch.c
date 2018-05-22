@@ -12,11 +12,25 @@
 
 void fileSearch(char *searchTerm)
 {
-
+    //Declarations
+    const char *path = ".";
+    DIR *directory = opendir(path);
+    struct dirent *entry;
+    char *dirName = NULL;
+    char cwd[1024];
+    struct stat dirSt;
 }
+
 
 
 int main(int argc, char *argv[])
 {
+    //Argument error
+    if(argc < 3)
+    {
+        fprintf(stderr, "Usage: %s <searchTerm> <starting directory> \n", argv[0]);
+        exit(1);
+    }
+    
     return 0;
 }
