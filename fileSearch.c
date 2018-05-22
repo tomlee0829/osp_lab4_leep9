@@ -24,10 +24,10 @@ void fileSearch(char *searchTerm)
     {
         if(directory)
         {
-            while(entry = readdir(directory))
+            while((entry = readdir(directory)))
             {
                 dirName = entry->d_name;
-                if(stat(dirName, &dirSt) == -1)
+                if (stat(dirName, &dirSt) == -1)
                 {
                     perror("error");
                     continue;
@@ -58,12 +58,27 @@ void fileSearch(char *searchTerm)
 
 int main(int argc, char *argv[])
 {
+    char  *dirPath;
+    char *searchTerm;
+    struct stat dirSt;
+    
     //Argument error
     if(argc < 3)
     {
         fprintf(stderr, "Usage: %s <searchTerm> <starting directory> \n", argv[0]);
         exit(1);
     }
+    
+    searchTerm = argv[1];
+    dirPath = argv[2];
+    if(stat(dirPath, &dirSt) != 0)
+    {
+        perror("error");
+        exit(1);
+    }
+    
+    chdir(dirPath);
+    fileSearch(searchTerm);
     
     return 0;
 }
